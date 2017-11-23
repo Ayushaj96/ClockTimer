@@ -4,21 +4,20 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
 public class ClockTimer1 extends JFrame implements Runnable {
 
     private JLabel label;
-   
     private final int hours;
     private final int minutes;
     private final int seconds;
 
-
-     public void run() {
-            long c = (hours * 3600 + 60 * minutes + seconds);
+    public void run() {
+         long c = hours * 3600 + 60 * minutes + seconds;
             while (true) {
                 if(c<0)
-                {
-                    break;
+                {                       onTimerEnd();
+                    
                 }
                 else
                 {
@@ -26,10 +25,7 @@ public class ClockTimer1 extends JFrame implements Runnable {
                 String d=onSecondsUpdate(c--);
                 label.setText(d);  
                     Thread.sleep(1000);
-                    if(c==0)
-                    {
-                        onTimerEnd();
-                    }
+ 
                 } catch (InterruptedException x) {
                 }
                 }
@@ -39,12 +35,11 @@ public class ClockTimer1 extends JFrame implements Runnable {
      public static String onSecondsUpdate(long seconds)
      {
      long s = seconds % 60;
-    long m = (seconds / 60) % 60;
-    long h = (seconds / (60 * 60)) % 24;
+     long m = (seconds / 60) % 60;
+     long h = (seconds / (60 * 60)) % 24;
    
     return String.format("%d:%02d:%02d", h,m,s);
-   
-     }
+      }
      
       void onTimerEnd()
      {
@@ -54,18 +49,17 @@ public class ClockTimer1 extends JFrame implements Runnable {
         this.hours = hours;
       this.minutes = minutes;
       this.seconds = seconds;
-        label = new JLabel();
-        add(label);
-        
-       
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(300,300);
         setVisible(true);
+        label = new JLabel(" ",JLabel.CENTER);
+        label.setFont(new java.awt.Font("Tahoma", 0, 22));
+        add(label); 
     }
 
     
     public static void main(String[] args){
-        ClockTimer1 frame = new ClockTimer1(1,0,5);
+        ClockTimer1 frame = new ClockTimer1(0,0,5);
         Thread t=new Thread(frame);
         t.start();
     }
